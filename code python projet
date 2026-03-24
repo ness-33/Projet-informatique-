@@ -1,4 +1,5 @@
-import random  #générer des éléments aléatoires.
+
+import random  # aléatoires.
 
 #Couleurs possibles
 couleurs = ["rouge", "bleu", "vert", "jaune", "orange", "violet"]
@@ -6,18 +7,49 @@ couleurs = ["rouge", "bleu", "vert", "jaune", "orange", "violet"]
 # Générer la combinaison secrète
 combinaison = []
 for i in range(4):
-    combinaison.append(random.choice(couleurs))
+    couleur= random.choice(couleurs)
+    combinaison.append(couleur)
 
-print("Jeu du Mastermind")
+print("Bienvenue au jeu du Mastermind")
 print("Couleurs possibles :", couleurs)
 
-# Demander une proposition au joueur
-entree = input("Entre 4 couleurs séparées par un espace : ")
-proposition = entree.split()
+#essais max
+essais_max = 10
+essais = 0
+#la boucle while pour le jeu:le programme principale quoi
 
-bien_places = 0
-mal_places = 0
+while essais < essais_max:
+    entree=input("entre la suite de couleur, vous devez separer les couleurs par un espace :")
+    proposition=entree.split()
+#verification si la reponse est valide
+    if len(proposition) != 4 :  
+        print("Erreur", "tu dois presenter 4 couleurs exactement!")
+        continue
 
-# Comparaison des couleurs
-
-#print les couleurs si elle sont bien places ou mal place
+    couleurs_valides=True
+    for couleur in proposition:
+        if couleur not in couleurs:
+            couleurs_valides= False
+            print("Erreur, tu dois entrer une couleur valide : "+ couleur+"  n'existe pas")
+            break
+    if not couleurs_valides:
+        continue
+#l'initialisation de la verification
+    bien_place= 0
+    mal_place= 0
+    for i in range(4):
+        if proposition[i] == combinaison[i]:
+            bien_place+=1
+        elif proposition[i] in combinaison:
+            mal_place+=1
+#donner le resultat de la prediction
+    print("Couleurs bien placées:",bien_place)
+    print("couleurs mal placées:", mal_place)
+#on verifie si le joueur a gagné 
+    if bien_place==4:
+        print("BRAVO TU AS GAGNES")
+        break
+    essais += 1
+    print("Il te reste", essais_max - essais,"essais")
+    if essais== essais_max and bien_place != 4:
+        print("Dommage..tu as perdu, apres tout tu n'espas devin,la réponse etait:",combinaison)
